@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "Downloading Moods"
+echo "FR ----------------------------"
+/usr/www/cgi-bin/get_moods fr
+echo "UK ----------------------------"
+/usr/www/cgi-bin/get_moods uk
+echo "US ----------------------------"
+/usr/www/cgi-bin/get_moods us
+echo "IT ----------------------------"
+/usr/www/cgi-bin/get_moods it
+echo "ES ----------------------------"
+/usr/www/cgi-bin/get_moods es
+echo "BE ----------------------------"
+/usr/www/cgi-bin/get_moods be
+echo "BR ----------------------------"
+/usr/www/cgi-bin/get_moods br
+
+

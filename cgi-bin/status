@@ -1,0 +1,88 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+if [ "$REQUEST_METHOD" = "POST" ]; then
+	read QUERY_STRING
+fi
+
+if [ ! -e "/usr/www/ok.version" ]; then
+    VERSION=0
+else
+    VERSION=`cat /usr/www/ok.version`
+fi
+
+if [ ! -e "$CNF_DATADIR/Run/led.color" ]; then
+
+    LED_COLOR=00FF00
+else
+    LED_COLOR=`cat $CNF_DATADIR/Run/led.color`  
+fi
+
+if [ ! -e "$CNF_DATADIR/Run/led.pulse" ]; then
+	PULSE=0
+else
+	PULSE=`cat $CNF_DATADIR/Run/led.pulse` 
+fi
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then        
+        SLEEP=0                                    
+else                                             
+        SLEEP=`cat $CNF_DATADIR/Run/karotz.sleep`    
+fi 
+if [ ! -e "$CNF_DATADIR/Run/Vera.ip" ]; then
+       VIP=0.0.0.0                                 
+else                                            
+       VIP=`cat $CNF_DATADIR/Run/Vera.ip`
+fi 
+                
+ifconfig -a | grep eth0  >>/dev/null 2>>/dev/null
+if [ $? = 0  ]; then
+   ETH_MAC=`ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'` >>/dev/null 2>>/dev/null
+else
+   ETH_MAC="00:00:00:00:00:00"
+fi
+
+ifconfig -a | grep wlan0  >>/dev/null 2>>/dev/null                         
+if [ $? = 0  ]; then                            
+   WLAN_MAC=`ifconfig wlan0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'` >>/dev/null 2>>/dev/null
+else                                                                                                       
+   WLAN_MAC="00:00:00:00:00:00"                                                                             
+fi 
+
+find  $CNF_DATADIR/Tmp -name "*.txt" > $CNF_DATADIR/Tmp/tmplst 2>>/dev/null
+CS=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+
+find  $CNF_DATADIR/Rfid -name "*.rfid" > $CNF_DATADIR/Tmp/tmplst 2>>/dev/null                                                
+NT=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)                                                                     
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null         
+
+
+NM=$( ls -R -A $CNF_DATADIR/Moods/fr/ | grep ".mp3" | wc -l) 2>>/dev/null 
+NS=$( ls -A $CNF_DATADIR/Sounds/ | grep ".mp3" | wc -l) 2>>/dev/null  
+NST=$( ls -A $CNF_DATADIR/Stories/ | grep ".mp3" | wc -l) 2>>/dev/null
+mount | grep usbkey >>/dev/null 2>>/dev/nul
+if [ $? -eq 0 ]; then
+   UFS=`df -Ph /mnt/usbkey | awk 'NR==2{print $4}'`  >>/dev/null 2>>/dev/nul
+else
+   UFS=-1
+fi
+KFS=`df -Ph /usr | awk 'NR==2{print $4}'`  >>/dev/null 2>>/dev/nul
+if [ -e "$CNF_DATADIR/Run/ears.disabled" ]; then
+  ED=1
+else
+  ED=0
+fi
+L0='{'
+L1='"version":"'$VERSION'","ears_disabled":"'$ED'","sleep":"'$SLEEP'"'
+L2=',"led_color":"'$LED_COLOR'","led_pulse":"'$PULSE'","tts_cache_size":"'$CS
+L3='","usbstick_free_space":"'$UFS'","karotz_free_space":"'$KFS'","eth_mac":"'$ETH_MAC'","wlan_mac":"'$WLAN_MAC'"'
+L4=',"nb_tags":"'$NT'"'
+L5=',"nb_moods":"'$NM'","nb_sounds":"'$NS'","nb_stories":"'$NST'"'
+L10='}'
+DATA=$L0$L1$L2$L3$L4$L5$L10
+
+SendResponse "$DATA"

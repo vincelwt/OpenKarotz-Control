@@ -1,0 +1,64 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/tts.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+source /www/cgi-bin/webcam.inc
+
+
+#Leds 557788 000000 1
+
+TakeSnapshot 
+
+#AcapelaTTS "Salut ca vas bien ?" "antoine22k"
+# dbus_led_pulse FF0000 00FF0
+
+#A=$(BuildVeraUrl 192.168.253.153 24)
+#GetUrl $A
+#ReadParam $CNF_DATADIR/Rfid/D0021A35038C3FEA.cmd -1
+
+#for f in $(cat /www/cgi-bin/www_filelist) ; do
+#  echo $f
+#done;
+#LedsRestore 
+
+#EarsReset 
+#L=$[($RANDOM % ($[15 - 1] + 1))]
+#R=$[($RANDOM % ($[15 - 1] + 1))]
+#echo $R
+#echo $L
+#EarsMove $L $R 100
+
+#SendResponse "Salut ca vas"
+
+#echo $CNF_DATADIR
+ 
+#START=$(date +%s)
+#WAIT=$((`cat /dev/urandom|od -N1 -An -i` % 60))
+#echo $START
+#echo $WAIT
+#sleep $WAIT
+#END=$(date +%s)
+#INTERVAL=$((END-START))
+#echo END $END
+#echo INTERVAL $INTERVAL
+
+# mpd
+# mkfifo /tmp/mplayer-control
+#mplayer -slave -input file=/tmp/mplayer-control /path/to/some/file/to/play
+#echo "pause" > /tmp/mplayer-control
+#echo "quit" > /tmp/mplayer-control
+#mplayer -input cmdlist | more
+
+
+#if [ ! -f "/tmp/mplayer-control" ]; then
+# mkfifo /tmp/mplayer-control
+#fi
+
+
+
+
+

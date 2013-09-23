@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+
+KillProcess
+ReadUrlParam
+
+Leds 00FF00 000000 1
+EarsReset
+SILENT=${URLParam[silent]}
+if [ "$SILENT" == "" ]; then
+  SILENT=0
+fi
+if [ $SILENT -eq 0 ]; then
+    PlaySound /usr/karotz/res/sounds/karotz_allume.mp3 
+fi
+
+rm $CNF_DATADIR/Run/karotz.sleep  >>/dev/null 2>>/dev/null 
+DATA='{"return":"0","silent":"'$SILENT'"}'   
+
+SendResponse "$DATA"

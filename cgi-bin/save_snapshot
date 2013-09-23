@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import cgi
+import os.path
+from ftplib import FTP
+form = cgi.FieldStorage()
+fname=form["filename"].value
+
+f = open("/usr/www/snapshots/"+fname, "w")
+f.write( form["sendfile"].value  )
+f.close()
+
+ftp = FTP('192.168.253.243')   # connect to host, default port
+ftp.login('admin','password')               # user anonymous, passwd anonymous@
+rep=ftp.sendcmd('CWD web/arotz')
+fichier = "/usr/www/snapshots/"+fname
+print os.path.basename(fichier)
+file = open(fichier, 'rb') # ici, j'ouvre le fichier ftp.py
+ftp.storbinary('STOR '+os.path.basename(fichier), file) # ici (oC9 connect est encore la variable de la connexion), j'indique le fic
+file.close() # on ferme le fichier
+ftp.retrlines('LIST')     # list directory contents
+ftp.quit()
+
+
+print "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+print "Connection: close"
+print "Accept-Ranges: bytes"
+print "Status: 200 Ok"
+print ""
+print ""
+

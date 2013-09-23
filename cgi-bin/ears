@@ -1,0 +1,43 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/ears.inc
+source /usr/www/cgi-bin/utils.inc
+
+ReadUrlParam
+
+if [ -e "$CNF_DATADIR/Run/ears.disabled" ]; then
+   DATA='{"return":"1","msg":"Unable to perform action, ears disabled."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+L=${URLParam[left]}
+R=${URLParam[right]}
+NO_RESET=${URLParam[noreset]}
+
+if [ -e "$CNF_DATADIR/Run/karotz.sleep" ]; then
+   DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+if [ "$NO_RESET" == "1" ]; then
+  RESET=0
+else
+  RESET=1
+fi
+
+if [ "$L" == "" ] ||  [ "$R" == "" ]; then
+    DATA='{"return":"1","msg":"Missing mandatory parameters."}'
+else
+    if [ $RESET -eq 1 ]; then
+      EarsReset
+    fi
+    EarsMove $R $L 100
+
+    DATA='{"left":"'$L'","right":"'$R'","return":"0"}'
+fi
+
+SendResponse "$DATA"

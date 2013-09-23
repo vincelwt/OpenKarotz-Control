@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+
+rm  -rf $CNF_DATADIR/Rfid/*  >>/dev/null 2>>/dev/null 
+DATA='{"return":"0"}'
+
+SendResponse "$DATA"
+

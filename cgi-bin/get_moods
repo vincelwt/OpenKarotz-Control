@@ -1,0 +1,39 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+
+ReadUrlParam
+
+echo "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+echo "Connection: close"
+echo "Accept-Ranges: bytes"
+#           echo "Content-Length: "${#DATA}
+echo "Content-type: text/plain"
+echo ""
+
+LG=${URLParam[lang]}
+if [ "$LG" == "" ]; then
+    DATA='Missing mandatory parameters'
+    echo "$DATA"
+    exit 0
+fi
+
+DIRECTORY=$CNF_DATADIR/Moods/$LG
+echo "Updating language : $LG"
+if [ ! -d "$DIRECTORY" ]; then
+   mkdir "$DIRECTORY"  
+fi
+for ((i = 1; i < 400; i += 1))
+do
+if [  ! -f  "$CNF_DATADIR/Moods/$LG/${i}.mp3" ]; then
+   curl -o  "$CNF_DATADIR/Moods/$LG/${i}.mp3" http://s3.amazonaws.com/karotz/moods/$LG/${i}.mp3 >>/dev/null 2>>/dev/null
+   echo "${i}.mp3 : (D)"
+else
+   echo "${i}.mp3"
+fi
+done
+echo "Done."
+
+

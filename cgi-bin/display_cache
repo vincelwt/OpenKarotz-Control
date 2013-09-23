@@ -1,0 +1,33 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+source /usr/www/cgi-bin/leds.inc
+
+ReadUrlParam
+
+#  LED_COLOR=${URLParam[color]}
+CL='{"cache":['
+find  $CNF_DATADIR/Tmp -name "*.txt" > $CNF_DATADIR/Tmp/tmplst 
+NB=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+if [ $NB -gt 0 ]; then 
+  
+   for f in $( ls $CNF_DATADIR/Tmp/*.txt  )
+   do
+     ID=$(echo $f  | cut -d '/' -f 5 | cut -d '.' -f 1)
+     if [ ! -e $CNF_DATADIR/Tmp/$ID".voice" ]; then 
+        VOICE="unknown"
+     else
+        VOICE=$( cat $CNF_DATADIR/Tmp/$ID".voice" )
+     fi
+     TEXT=$( cat "$f" | sed -r 's/["]+/ /g')
+     CL=$CL'{"id":"'$ID'","text":"'$TEXT'","voice":"'$VOICE'"},'
+   done
+   CL=${CL%?}
+fi
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+DATA=$CL'],"return":"0" }'
+
+SendResponse "$DATA"
+

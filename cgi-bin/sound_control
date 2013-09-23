@@ -1,0 +1,35 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+ReadUrlParam
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then
+   CMD=${URLParam[cmd]}
+   
+   if [ "$CMD" == "" ]; then
+     DATA='{"return":"1","msg":"No command specified."}'
+     SendResponse "$DATA"
+     exit 0
+   fi
+   
+   CHECK=`ps eax | grep mplayer | wc -l`
+   if [ $CHECK -gt 1 ]; then
+      DCMD=$(echo $CMD | UrlDecode)
+      echo $DCMD > /tmp/mplayer-control
+      DATA='{"return":"0","cmd":"'$DCMD'"}'
+   else
+      DATA='{"return":"1","msg":"No sound currently playing."}'
+   fi
+       
+else
+   DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'
+fi
+
+SendResponse "$DATA"
+
+
+
+

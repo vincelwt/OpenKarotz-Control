@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+
+KillProcess
+
+rm -f      $CNF_DATADIR/Run/rfid.record  >>/dev/null 2>>/dev/null 
+PlaySound  $CNF_DATADIR/Voice/Rfid_Stop_Record.mp3
+LedsRestore
+
+DATA='{"return":"0"}'
+SendResponse "$DATA"
+

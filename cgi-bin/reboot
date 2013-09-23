@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+
+KillProcess
+Leds FF0000 
+
+/sbin/reboot -d 10 &
+DATA='{"return":"0"}'
+
+SendResponse "$DATA"

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+source /www/cgi-bin/webcam.inc
+
+KillProcess
+ReadUrlParam
+
+FNAME=${URLParam[filename]}
+
+#if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then  
+#     EarsReset
+#     Leds 00FF66 00FF00 1
+#     EarsMove 5 5 50
+#     Leds 000000
+#     date +%s  > $CNF_DATADIR/Run/karotz.sleep
+#     DATA='{"return":"0"}'
+#else
+#     DATA='{"return":"1","msg":"Unable to perform action, rabbit is already sleeping."}'
+#fi
+
+echo "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+echo "Connection: close"
+echo "Accept-Ranges: bytes"
+#echo "Content-Disposition: attachment; filename="$FNAME
+echo "Cache-Control: private"
+echo "Pragma: private"
+echo "Content-type: image/jpeg"
+echo ""
+
+if [ -e "/www/snapshots/$FNAME" ]; then
+  cat "/www/snapshots/$FNAME"
+fi
+
+

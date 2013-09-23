@@ -1,0 +1,70 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/tts.inc
+
+KillProcess
+ReadUrlParam
+
+TTS=${URLParam[text]} 
+RAW_VOICE=${URLParam[voice]}
+SPEED=${URLParam[speed]}
+NO_CACHE=${URLParam[nocache]}
+
+if [ "$TTS" == "" ]; then
+   DATA='{"return":"1","msg":"Missing mandatory parameters."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+# TTS ENGINE
+# Use ACAPELA Engine by default
+# 0 ACAPELA
+# 1 GOOGLE
+# 2 VIOLET
+TTS_ENGINE=${URLParam[engine]}
+
+PLAYED=0
+CACHE=0
+if [ "$TTS" == "" ] ; then
+   DATA='{"return":"1","msg":"Missing mandatory parameter(s)."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then  
+   if [ "$RAW_VOICE" == "" ]; then
+      RAW_VOICE="margaux"  
+   fi
+   VOICE=$RAW_VOICE"22k"
+
+   if [ "$NO_CACHE" == "" ]; then
+         NO_CACHE=0
+   fi
+   
+   if [ "$TTS_ENGINE" == "" ]; then
+       TTS_ENGINE=0
+   fi 
+
+   MD5FILE=$(echo "$TTS$VOICE" | md5sum | cut -d ' ' -f 1)
+   if [ -e "$CNF_DATADIR/Tmp/${MD5FILE}.txt"  ] && [ $NO_CACHE -eq 0  ]; then
+      CACHE=1
+      PlaySound $CNF_DATADIR/Tmp/${MD5FILE}.mp3
+   else
+       case $TTS_ENGINE in                                                                                                                                                                             
+             1)  GoogleTTS $TTS $VOICE $NO_CACHE $RAW_VOICE;;                                                                                                                                                                
+             2)  VioletTTS $TTS $VOICE $NO_CACHE $RAW_VOICE;;                                                                                                                                                                 
+             *)  AcapelaTTS $TTS $VOICE $NO_CACHE $RAW_VOICE;;          
+       esac
+   fi
+   PLAYED=1
+   DATA='{"played":"'$PLAYED'","cache":"'$CACHE'","return":"'$?'","voice:"'$RAW_VOICE'"}'
+else
+   DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'
+fi
+
+SendResponse "$DATA"
+
+

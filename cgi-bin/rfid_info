@@ -1,0 +1,35 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+KillProcess
+ReadUrlParam
+
+
+TAG_ID=${URLParam[tag]}
+
+if [ "$TAG_ID" == "" ]; then 
+   DATA='{"return":"1","msg":"Missing mandatory parameters."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+if [ ! -e "$CNF_DATADIR/Rfid/$TAG_ID.rfid" ]; then
+   DATA='{"return":"1","msg":"Tag ID not found."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+      
+TAG_TYPE=$(ReadParam  $CNF_DATADIR/Rfid/$TAG_ID.type  -1)
+TAG_COLOR=$(ReadParam $CNF_DATADIR/Rfid/$TAG_ID.color -1)
+TAG_CMD=$(ReadParam   $CNF_DATADIR/Rfid/$TAG_ID.cmd 0)
+TAG_VAR=$(ReadParam   $CNF_DATADIR/Rfid/$TAG_ID.var -1)
+TAG_NAME=$(ReadParam  $CNF_DATADIR/Rfid/$TAG_ID.name "")
+TG='{ "id":"'$TAG_ID'","type":"'$TAG_TYPE'","type_name":"'$(GetRfidTypeName $TAG_TYPE)'","color":"'$TAG_COLOR'","color_name":"'$(GetRfidColorName $TAG_COLOR)'","cmd":"'$TAG_CMD'","cmd_name:","'$(GetCmdName $TAG_CMD)'","var":"'$TAG_VAR'","name":"'$TAG_NAME'"'
+TG=$TG',"return":"0" }'
+
+SendResponse "$TG"
+
+

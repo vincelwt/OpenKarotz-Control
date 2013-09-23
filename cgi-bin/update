@@ -1,0 +1,266 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+
+function ReadUrlParam 
+{  
+ saveIFS=$IFS
+  IFS='=&'
+  parm=($QUERY_STRING)
+  IFS=$saveIFS
+  for ((i=0; i<${#parm[@]}; i+=2))
+  do
+      URLParam[${parm[i]}]=${parm[i+1]}
+  done
+}
+
+function Download {
+URL=$1
+RDIR=$2
+LDIR=$3
+NAME=$4
+GROUP=$5
+NL=$6
+
+echo "----------------------------------------"
+echo "Updating : "$NAME
+wget $URL$RDIR/list.txt -O $LDIR/list.txt -q
+nbline=$(cat $LDIR/list.txt | wc -l )
+echo $nbline" File(s) to download"
+echo "----------------------------------------"
+i=1
+while read line;
+do
+    n=$((i%$GROUP))
+    if [ $n -eq 0 ]; then
+       echo -n "."
+    fi
+    wget $URL$RDIR/$line -q -O $LDIR/$line
+    chmod 777 $LDIR/$line
+    i=$((i+1))
+done < $LDIR/list.txt
+rm -f $LDIR/list.txt >>/dev/null 2>>/dev/null
+echo ""
+}
+
+
+
+BLACK=000000
+BLUE=0000FF
+CYAN=00FF9F
+GREEN=00FF00
+ORANGE=FFA500
+PINK=FFCFAF
+PURPLE=9F00FF
+RED=FF0000
+VIOLET=660099
+WHITE=4FFF68
+YELLOW=75FF00
+
+TDIR="/usr/www"
+UDIR="$CNF_DATADIR"
+SURL="http://karotz.filippi.org"
+
+ReadUrlParam
+
+echo "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+echo "Connection: close"
+echo "Accept-Ranges: bytes"
+echo "Content-type: text/plain"
+echo ""
+
+# Checking Forced Update
+FU=${URLParam[force]}
+UU=${URLParam[usb]}
+
+if [ "$FU" == "1" ] || [ "$1" == "1" ]; then
+ rm -f $TDIR/ok.version >>/dev/null 2>>/dev/null
+fi
+
+# Checking root Web
+if [ ! -d $TDIR ]; then
+   mkdir $TDIR >>/dev/null 2>>/dev/null
+fi
+
+# Checking cgi-bin
+if [ ! -d $TDIR/cgi-bin ]; then
+   mkdir $TDIR/cgi-bin >>/dev/null 2>>/dev/null
+fi   
+
+# Checking images
+if [ ! -d $TDIR/images ]; then
+   mkdir $TDIR/images >>/dev/null 2>>/dev/null
+fi
+
+# Checking Snapshots
+if [ ! -d $TDIR/snapshots ]; then
+   mkdir $TDIR/snapshots >>/dev/null 2>>/dev/null
+fi
+
+# Get local version
+if [ ! -f $TDIR/ok.version ]; then
+   LV=0
+else
+   LV=$(cat $TDIR/ok.version  )
+fi
+
+# Create pipes for Program Control
+#if [ ! -f /tmp/mpd_control ]; then
+#   mknod /tmp/mpd_control p  >>/dev/null 2>>/dev/null
+#fi
+
+if [ ! -f /tmp/mplayer-control ]; then
+   mknod /tmp/mplayer-control p  >>/dev/null 2>>/dev/null
+fi
+
+
+# Get server Version
+rm $TDIR/server.ok.version >>/dev/null 2>>/dev/null
+echo "----------------------------------------"
+wget $SURL/ok.version -q -O $TDIR/server.ok.version 
+RV=$(cat $TDIR/server.ok.version )
+
+# Display version
+echo -n "Server Version : "
+echo $RV
+echo -n "Local Version  : "
+echo $LV
+
+
+if [ "${LV:-0}" -ge "${RV:-0}" ] ; then
+	echo "----------------------------------------"
+  	echo "No update needed"
+else
+    # Update local version
+    rm -f $TDIR/ok.version >>/dev/null 2>>/dev/null
+    mv $TDIR/server.ok.version $TDIR/ok.version >>/dev/null 2>>/dev/null
+    echo "Web Root  : "$TDIR
+    echo "Data Root : "$UDIR 
+    
+    # Get Web Server Config File
+    echo "----------------------------------------"
+    echo "Updating Web Server Config"
+    echo "----------------------------------------"
+    wget $SURL/httpd.conf -O /usr/httpd.conf -q > /dev/null
+     
+	echo "----------------------------------------"
+	echo "Updating startup Script"
+	echo "----------------------------------------"
+	if [ ! -e "/usr/yaffs_start.sh.backup.ok" ]; then
+		 cp /usr/yaffs_start.sh /usr/yaffs_start.sh.backup.ok
+		 echo "# ----------------------------------------" >> /usr/yaffs_start.sh
+		 echo "# Open Karotz modification" >> /usr/yaffs_start.sh
+		 echo "# ----------------------------------------" >> /usr/yaffs_start.sh
+		 echo "ntpd -n -q -p pool.ntp.org" >> /usr/yaffs_start.sh
+		 echo "mount /dev/uba1 /mnt/usbkey" >> /usr/yaffs_start.sh
+		 echo "/usr/www/cgi-bin/start_ok" >> /usr/yaffs_start.sh
+		 echo "# ----------------------------------------" >> /usr/yaffs_start.sh
+		 echo "" >> /usr/yaffs_start.sh
+     fi
+        
+    # Updating /www
+    #URL=$1
+    #RDIR=$2
+    #LDIR=$3
+    #NAME=$4
+    #GROUP=$5
+    Download $SURL /www /usr/www "Pages Web" 1 
+    
+    # Updating /www/cgi-bin
+    Download $SURL /www/cgi-bin /usr/www/cgi-bin "Scripts" 5
+    
+    # Updating Images
+    Download $SURL /www/images /usr/www/images "Images" 1
+    
+    echo "----------------------------------------"
+    echo Checking Data Structure
+    echo "----------------------------------------"
+    
+	# Updating Data Path
+	#
+	if [ "$UU" == "1" ] || [ "$2" == "1" ]; then 
+    
+        if [ ! -d "$UDIR/Stories" ]; then
+            mkdir $UDIR/Stories >>/dev/null 2>>/dev/null
+            echo -n "."
+        else
+            echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Moods" ]; then
+           	mkdir $UDIR/Moods >>/dev/null 2>>/dev/null
+			echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Moods/fr" ]; then
+           	mkdir $UDIR/Moods/fr >>/dev/null 2>>/dev/null
+			echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Run" ]; then
+           mkdir $UDIR/Run >>/dev/null 2>>/dev/null
+           echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Rfid" ]; then
+        	mkdir $UDIR/Rfid >>/dev/null 2>>/dev/null
+            echo -n "."
+        else
+           	echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Sounds" ]; then
+           mkdir $UDIR/Sounds >>/dev/null 2>>/dev/null
+           echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+         if [ ! -d "$UDIR/Tmp" ]; then
+           mkdir $UDIR/Tmp >>/dev/null 2>>/dev/null
+           echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Voice" ]; then
+           mkdir $UDIR/Voice >>/dev/null 2>>/dev/null
+           echo -n "."
+        else
+           echo -n "o"
+        fi
+    
+        if [ ! -d "$UDIR/Rfid" ]; then
+           	mkdir $UDIR/Rfid >>/dev/null 2>>/dev/null
+			echo -n "."
+        else
+           	echo -n "o"
+        fi
+        echo ""
+          
+  	# Updating Voices  
+        Download $SURL /usbkey/Voice $UDIR/Voice "Voices" 1
+        
+        # Updating Sounds
+        Download $SURL /usbkey/Sounds $UDIR/Sounds "Sounds" 1
+        
+    fi
+fi
+echo "----------------------------------------"
+echo  Done
+echo  You Must now manually update Moods and Stories
+echo  from Update Tab
+echo "----------------------------------------"
+echo "Power Cycle your Rabbit to finish Instllation."
+/usr/bin/madplay $UDIR/Voice/install_ok.mp3 >>/dev/null 2>>/dev/null
+echo "----------------------------------------"
+
+
+
+

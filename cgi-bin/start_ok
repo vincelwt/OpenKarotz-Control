@@ -1,0 +1,57 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+
+EarsReset
+
+# Check for sound player command channel
+if [ ! -f "/tmp/mplayer-control" ]; then
+ mkfifo /tmp/mplayer-control
+fi
+
+# Check for mandatory directory 
+if [ ! -d "$CNF_DATADIR/Rfid" ]; then
+ mkdir $CNF_DATADIR/Rfid
+fi
+
+if [ ! -d "$CNF_DATADIR/Tmp" ]; then
+  mkdir $CNF_DATADIR/Tmp
+fi       
+
+if [ ! -d "$CNF_DATADIR/Run" ]; then
+ mkdir $CNF_DATADIR/Run
+fi       
+
+# Kill dbus Monitoring
+killall dbus-monitor
+
+# killing immortal dog daemon
+killall immortaldog
+
+# reset existing flag and state
+rm /var/run/karotz/dbus_events.pid
+rm $CNF_DATADIR/Run/karotz.sleep
+rm $CNF_DATADIR/Run/led.color
+rm $CNF_DATADIR/Run/led.pulse
+rm $CNF_DATADIR/Run/rfid.record
+rm $CNF_DATADIR/Run/rfid.delete
+
+# Launch needed daemon only
+/usr/karotz/bin/immortaldog /var/run/karotz/led.pid /usr/karotz/bin/led-daemon
+/usr/karotz/bin/immortaldog /var/run/karotz/rfid.pid /usr/karotz/bin/rfid-daemon
+/usr/karotz/bin/immortaldog /var/run/karotz/button.pid /usr/karotz/bin/button-daemon
+#/usr/karotz/bin/immortaldog /var/run/karotz/ears.pid /usr/karotz/bin/ears-daemon
+/usr/karotz/bin/immortaldog /var/run/karotz/webcam.pid /usr/karotz/bin/webcam-daemon 
+/usr/karotz/bin/immortaldog /var/run/karotz/dbus_events.pid /www/cgi-bin/dbus_events
+
+PlaySound $CNF_DATADIR/Sounds/ready.mp3
+Leds 00FF00 000000 1
+
+EarsMove 12 12 100
+
+
+
+

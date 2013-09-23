@@ -1,0 +1,3 @@
+
+# cat mail.txt |sendmail -S smtp.free.fr -f sender@domain dest@domain
+

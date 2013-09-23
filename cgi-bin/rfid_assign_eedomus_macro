@@ -1,0 +1,46 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+
+KillProcess
+ReadUrlParam
+
+
+TAG_ID=${URLParam[tag]}
+EEDOMUS_IP=${URLParam[ip]}
+EEDOMUS_USER=${URLParam[api_user]}
+EEDOMUS_PASS=${URLParam[api_password]}
+MACRO_ID=${URLParam[macro]}
+NAME=${URLParam[name]}
+
+if [ "$TAG_ID" == "" ] ||  [ "$MACRO_ID" == "" ] ||  [ "$EEDOMUS_IP" == "" ] ||  [ "$EEDOMUS_USER" == "" ] ||  [ "$EEDOMUS_PASS" == "" ]; then
+    DATA='{"return":"1","msg":"Missing mandatory parameters."}'
+    SendResponse "$DATA"
+    exit 0 
+fi
+
+# Clear existing information
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.cmd >>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.var>>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.action >>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.name >>/dev/null 2>>/dev/null
+
+if [ "$TAG_ID" != "" ]; then
+  echo $TYPE_EEDOMUS > $CNF_DATADIR/Rfid/$TAG_ID.cmd          
+   
+  if [ "$MACRO_ID" != "" ]; then 
+    echo $MACRO_ID > $CNF_DATADIR/Rfid/$TAG_ID.var
+  fi
+
+   if [ "$NAME" != "" ]; then                          
+     echo $( echo "$NAME" | UrlDecode) > $CNF_DATADIR/Rfid/$TAG_ID.name
+   fi 
+   URL=$(BuildEeDomusUrl $EEDOMUS_IP $MACRO_ID $EEDOMUS_USER $EEDOMUS_PASS)
+   echo $URL | base64 > $CNF_DATADIR/Rfid/$TAG_ID.action
+fi
+
+DATA='{"return":"0"}'   
+SendResponse "$DATA"
+

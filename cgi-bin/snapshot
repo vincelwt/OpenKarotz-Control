@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+source /www/cgi-bin/webcam.inc
+
+KillProcess
+
+TakeSnapshot
+PlaySound /usr/karotz/res/sounds/webcam.mp3
+LedsRestore
+DATA='{"return":"0"}'
+SendResponse "$DATA"

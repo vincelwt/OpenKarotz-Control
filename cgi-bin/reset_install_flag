@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/ears.inc
+source /usr/www/cgi-bin/utils.inc
+
+ReadUrlParam
+
+	rm /usr/www/ok.version  >>/dev/null 2>>/dev/null
+        DATA='{"return":"0""}'
+        
+SendResponse "$DATA"

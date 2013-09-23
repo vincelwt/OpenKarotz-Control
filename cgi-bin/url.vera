@@ -1,0 +1,1 @@
+VERA_BASE_URL=':49451/data_request?id=lu_action&output_format=json&serviceId=urn:micasaverde-com:serviceId:HomeAutomationGateway1&action=RunScene&SceneNum='

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+source /www/cgi-bin/webcam.inc
+
+KillProcess
+
+if [ ! -d "$CNF_DATADIR/Rfid" ]; then
+  DATA='{"return":"1","msg":"Rfid directory missing"}'
+  SendResponse "$DATA"
+  exit
+fi
+
+find  $CNF_DATADIR/Rfid -name "*.rfid" > $CNF_DATADIR/Tmp/tmplst
+NB=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+if [ $NB -gt 0  ]; then
+  BNAME="backup_"`date +%s`
+  cd $CNF_DATADIR/Rfid 
+  tar cvf /tmp/$BNAME.tar * >> /dev/null 2>> /dev/null
+  gzip /tmp/$BNAME.tar >> /dev/null 2>> /dev/null
+  echo "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+  echo "Connection: close"
+  echo "Accept-Ranges: bytes"
+  echo "Content-type: application/x-gzip"
+  echo "Content-Disposition: attachment; filename="$BNAME".tar.gz"
+  echo "Cache-Control: private"
+  echo "Pragma: private"
+  echo ""
+  if [ -e "/tmp/$BNAME.tar.gz" ]; then
+    cat "/tmp/$BNAME.tar.gz"
+  fi
+  rm /tmp/$BNAME.tar.gz >> /dev/null 2>> /dev/null
+else
+  DATA='{"return":"1","msg":"No Rfid informations to backup."}'
+  SendResponse "$DATA"
+  exit
+fi
+
+
+

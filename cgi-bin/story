@@ -1,0 +1,32 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+KillProcess
+ReadUrlParam
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then
+   STORY_ID=${URLParam[id]}
+   if [ "$STORY_ID" = "" ]; then
+     DATA='{"return":"1","msg":"No story to tell."}'
+     SendResponse "$DATA"
+     exit 0
+   fi    
+
+   if [ -e "$CNF_DATADIR/Stories/${STORY_ID}".mp3 ]; then
+      PlaySound $CNF_DATADIR/Stories/${STORY_ID}.mp3
+      DATA='{"return":"0"}' 
+   else
+      DATA='{"return":"1","msg":"Unable to find sound : '${SOUND_ID}'"}'
+   fi
+else
+   DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'
+fi
+
+SendResponse "$DATA"
+
+
+
+

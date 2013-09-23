@@ -1,0 +1,28 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+if [ ! -d "$CNF_DATADIR/Sounds" ]; then
+  DATA='{"return":"1","msg":"Sounds directory missing"}'
+  SendResponse "$DATA"
+  exit
+fi       
+ 
+find  $CNF_DATADIR/Sounds -name "*.mp3" > $CNF_DATADIR/Tmp/tmplst
+NB=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+TG=''
+HEAD='{ "sounds": [ '
+if [ $NB -gt 0  ]; then
+   for f in $( ls $CNF_DATADIR/Sounds/*.mp3  )
+   do
+     FNAME=$(echo $f  | cut -d '/' -f 5)
+     TG=$TG'{ "id":"'${FNAME%%.*}'"},'
+    done
+fi
+TAIL='], "return":"0" }'
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+DATA=$HEAD$TG$TAIL
+
+SendResponse "$DATA"

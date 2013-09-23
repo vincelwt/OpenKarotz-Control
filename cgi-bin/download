@@ -1,0 +1,31 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+
+URL=$1
+RDIR=$2
+LDIR=$3
+NAME=$4
+GROUP=$5
+NL=$6
+
+echo "----------------------------------------"
+echo "Updating "$NAME
+wget $URL$RDIR/list.txt -O $LDIR/list.txt -q
+nbline=$(cat $LDIR/list.txt | wc -l )
+echo $nbline" File(s) to download"
+echo "----------------------------------------"
+i=1
+while read line;
+do
+    n=$((i%$GROUP))
+    if [ $n -eq 0 ]; then
+      echo -n "."
+    fi
+    wget $URL$RDIR/$line -q -O $LDIR/$line
+    chmod 777 $LDIR/$line
+    i=$((i+1))
+done < $LDIR/list.txt
+rm -f $LDIR/list.txt >>/dev/null 2>>/dev/null
+echo ""
+            

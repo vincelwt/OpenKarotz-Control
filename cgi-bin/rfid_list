@@ -1,0 +1,35 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+if [ ! -d "$CNF_DATADIR/Rfid" ]; then
+  DATA='{"return":"1","msg":"Rfid directory missing"}'
+  SendResponse "$DATA"
+  exit
+fi       
+ 
+find  $CNF_DATADIR/Rfid -name "*.rfid" > $CNF_DATADIR/Tmp/tmplst
+NB=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+if [ $NB -gt 0  ]; then
+   TG='{ "tags":['
+   for f in $( ls $CNF_DATADIR/Rfid/*.rfid  )
+   do
+     TAG_ID=$(echo $f  | cut -d '/' -f 5 | cut -d '.' -f 1)
+     TAG_TYPE=$(ReadParam  $CNF_DATADIR/Rfid/$TAG_ID.type  -1)
+     TAG_COLOR=$(ReadParam $CNF_DATADIR/Rfid/$TAG_ID.color -1)
+     TAG_CMD=$(ReadParam   $CNF_DATADIR/Rfid/$TAG_ID.cmd 0)
+     TAG_VAR=$(ReadParam   $CNF_DATADIR/Rfid/$TAG_ID.var -1)
+     TAG_NAME=$(ReadParam  $CNF_DATADIR/Rfid/$TAG_ID.name "")
+     
+     TG=$TG'{ "id":"'$TAG_ID'","type":"'$TAG_TYPE'","color":"'$TAG_COLOR'","cmd":"'$TAG_CMD'","var":"'$TAG_VAR'","name":"'$TAG_NAME'"},'
+    done
+    TG=${TG%?}']'
+else
+    TG='{ "tags":""'
+fi
+TG=$TG',"return":"0" }'
+
+SendResponse "$TG"

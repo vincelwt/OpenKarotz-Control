@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+source /www/cgi-bin/leds.inc
+source /www/cgi-bin/ears.inc
+
+KillProcess
+
+EarsReset
+PlaySound $CNF_DATADIR/Voice/Rfid_Start_Record.mp3 1
+Leds AABB00 FF0000 1 1
+echo "1" > $CNF_DATADIR/Run/rfid.record  >>/dev/null 2>>/dev/null 
+
+DATA='{"return":"0"}'
+SendResponse "$DATA"
+

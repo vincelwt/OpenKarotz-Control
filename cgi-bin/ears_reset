@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+source /usr/www/cgi-bin/ears.inc
+
+KillProcess
+ReadUrlParam
+
+if [ -e "$CNF_DATADIR/Run/ears.disabled" ]; then
+   DATA='{"return":"1","msg":"Unable to perform action, ears disabled."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then
+	EarsReset
+	DATA='{"return":"0"}'
+else
+        DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'
+fi
+
+SendResponse "$DATA"
+

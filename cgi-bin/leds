@@ -1,0 +1,50 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/url.inc
+source /usr/www/cgi-bin/utils.inc
+source /usr/www/cgi-bin/leds.inc
+
+KillProcess
+ReadUrlParam
+
+if [ ! -e "$CNF_DATADIR/Run/karotz.sleep" ]; then
+       LED_COLOR=${URLParam[color]}
+       LED_NOMEMORY=${URLParam[nomemory]}
+       LED_PULSE=${URLParam[pulse]}
+       LED_PULSE2=${URLParam[color_pulse]}
+       LED_SPEED=${URLParam[speed]}
+        
+       if [ "$LED_NOMEMORY" = "" ]; then                 
+           LED_NOMEMORY=0                           
+       fi     
+       
+       if [ "$LED_SPEED" == "" ]; then
+           LED_SPEED=700
+       fi
+       
+       if [ "$LED_PULSE2" = "" ]; then
+         LED_PULSE2=000000
+       fi
+       
+       if [ "$LED_COLOR" = "" ]; then
+          if [ ! -e "$CNF_DATADIR/Run/led.color" ]; then
+             LED_COLOR=00FF00
+          else
+             LED_COLOR=`cat $CNF_DATADIR/Run/led.color`  
+          fi
+      fi
+      if [ "$LED_PULSE" = "" ]; then
+          if [ ! -e "$CNF_DATADIR/Run/led.pulse" ]; then
+              LED_PULSE=0
+          fi                         
+      fi
+      Leds $LED_COLOR $LED_PULSE2 $LED_PULSE $LED_NOMEMORY $LED_SPEED
+      DATA='{"color":"'$LED_COLOR'","pulse_color":"'$LED_PULSE2'","pulse":"'$LED_PULSE'","no_memory":"'$LED_NOMEMORY'","return":"0"}'
+else
+      DATA='{"return":"1","msg":"Unable to perform action, rabbit is sleeping."}'	      
+fi
+
+SendResponse "$DATA"
+
+

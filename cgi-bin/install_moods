@@ -1,0 +1,57 @@
+#!/bin/bash
+
+source /usr/www/cgi-bin/setup.inc
+source /usr/www/cgi-bin/utils.inc
+
+function ReadUrlParam 
+{  
+ saveIFS=$IFS
+  IFS='=&'
+  parm=($QUERY_STRING)
+  IFS=$saveIFS
+  for ((i=0; i<${#parm[@]}; i+=2))
+  do
+      URLParam[${parm[i]}]=${parm[i+1]}
+  done
+}
+
+BLACK=000000
+BLUE=0000FF
+CYAN=00FF9F
+GREEN=00FF00
+ORANGE=FFA500
+PINK=FFCFAF
+PURPLE=9F00FF
+RED=FF0000
+VIOLET=660099
+WHITE=4FFF68
+YELLOW=75FF00
+
+TDIR="/usr/www"
+UDIR="$CNF_DATADIR"
+SURL="http://karotz.filippi.org"
+
+ReadUrlParam
+
+echo "Server: OpenKarotz WebServer 1.0 - Massalia 2013"
+echo "Connection: close"
+echo "Accept-Ranges: bytes"
+echo "Content-type: text/plain"
+echo ""
+
+# Checking Forced Update
+FU=${URLParam[force]}
+UU=${URLParam[usb]}
+
+
+# Checking root Web
+if [ ! -d $UDIR/Moods ]; then
+   mkdir $UDIR/Moods >>/dev/null 2>>/dev/null
+fi
+
+if [ ! -d $UDIR/Moods/fr ]; then
+   mkdir $UDIR/Moods/fr >>/dev/null 2>>/dev/null
+fi
+
+Download $SURL /usbkey/Moods/fr $UDIR/Moods/fr Moods 5
+

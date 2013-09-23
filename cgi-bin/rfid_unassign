@@ -1,0 +1,37 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+KillProcess
+ReadUrlParam
+
+
+TAG_ID=${URLParam[tag]}
+#VERA_IP=${URLParam[ip]}
+#SCENE_ID=${URLParam[scene]}
+#NAME=${URLParam[name]}
+
+if [ "$TAG_ID" == "" ]; then 
+   DATA='{"return":"1","msg":"Missing mandatory parameters."}'
+   SendResponse "$DATA"
+   exit 0
+fi
+
+if [ ! -e "$CNF_DATADIR/Rfid/$TAG_ID.rfid" ]; then
+   DATA='{"return":"1","msg":"Tag ID not found."}'
+   SendResponse "$DATA"
+   exit 0
+fi 
+      
+
+# Clear existing information
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.cmd >>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.var>>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.action >>/dev/null 2>>/dev/null
+rm -f $CNF_DATADIR/Rfid/$TAG_ID.name >>/dev/null 2>>/dev/null
+
+DATA='{"return":"0"}'   
+SendResponse "$DATA"
+

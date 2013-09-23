@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source /www/cgi-bin/setup.inc
+source /www/cgi-bin/url.inc
+source /www/cgi-bin/utils.inc
+
+if [ ! -d "/usr/www/snapshots" ]; then
+  DATA='{"return":"1","msg":"Snapshots directory missing"}'
+  SendResponse "$DATA"
+  exit
+fi       
+ 
+find  /usr/www/snapshots -name "*.jpg" > $CNF_DATADIR/Tmp/tmplst
+NB=$(cat $CNF_DATADIR/Tmp/tmplst | wc -l)
+TG=''
+HEAD='{ "snapshots": [ '
+if [ $NB -gt 0  ]; then
+   for f in $( ls /usr/www/snapshots/*.jpg  )
+   do
+     TG=$TG'{ "id":"'$(echo $f  | cut -d '/' -f 5)'"},'
+    done
+fi
+TAIL='], "return":"0" }'
+rm -f $CNF_DATADIR/Tmp/tmplst >> /dev/null 2>> /dev/null
+DATA=$HEAD$TG$TAIL
+
+SendResponse "$DATA"
