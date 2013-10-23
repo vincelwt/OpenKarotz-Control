@@ -1,15 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 	<head>
 		<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.jpg" />
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>OpenKontrol</title>
-		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script src="dist/js/bootstrap.js"></script>
-		<script src="js/jquery.js"></script> 
-		<script src="js/bootstrap.min.js "></script>
+		<script src="dist/js/jquery-2.0.3.js"></script> 
 		<link rel="stylesheet" href="style.css" TYPE="text/css">
 		<link rel="stylesheet" href="dist/css/bootstrap.css" TYPE="text/css">
 		<script type="text/javascript">
@@ -44,7 +40,10 @@
 				'<div class="alert alert-success">' +
 				'<button type="button" class="close" data-dismiss="alert">' +
 				'&times;</button>' + message + '</div>');
+				sleep 10;
+				$('#alerts').append('');
 			}
+			
 		</script>
 		<script type="text/javascript">
 			function radio() {
