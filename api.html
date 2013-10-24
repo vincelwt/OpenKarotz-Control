@@ -4,97 +4,17 @@
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.jpg" />
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>OpenKontrol</title>
-		<script src="dist/js/bootstrap.js"></script>
-		<script src="dist/js/jquery-2.0.3.js"></script> 
 		<link rel="stylesheet" href="style.css" TYPE="text/css">
-		<link rel="stylesheet" href="dist/css/bootstrap.css" TYPE="text/css">
-		<script type="text/javascript">
-			document.write('<style type="text/css">.tabber{display:none;}<\/style>');
-		</script>
-
-		<script type="text/javascript">
-			function redict() {
-				addAlert('The message was sent successfully.');
-				var tts =  findSelection("tts");
-			   dest = document.getElementById('dest').value;
-
-				window.open(
-			  'cgi-bin/tts?text='+dest+'&voice='+tts,
-			  'result' 
-				);
-				
-			}
-			function findSelection(field) {
-				var tts = document.getElementsByName(field);
-				var sizes = tts.length;
-
-				
-					for (i=0; i < sizes; i++) {
-						if (tts[i].checked==true) {     
-						return tts[i].value;
-					}
-				}
-			}
-			function addAlert(message) {
-				$('#alerts').append(
-				'<div class="alert alert-success">' +
-				'<button type="button" class="close" data-dismiss="alert">' +
-				'&times;</button>' + message + '</div>');
-				sleep 10;
-				$('#alerts').append('');
-			}
-			
-		</script>
-		<script type="text/javascript">
-			function radio() {
-
-				var play =  findSelection("play");
-
-				window.open(
-			  'cgi-bin/sound?url='+play,
-			  'result' 
-				);
-				
-			}
-
-			function findSelection(field) {
-				var play = document.getElementsByName(field);
-				var sizes = play.length;
-
-				
-					for (i=0; i < sizes; i++) {
-						if (play[i].checked==true) {     
-						return play[i].value;
-					}
-				}
-			}
-		</script>
-		<script type="text/javascript">// <![CDATA[
-			function deroule(champ,valeur)
-			{/*valeur est la hauteur en pixel de la zone*/
-				switch (champ)
-				{
-					case 1: /*si champ vaut 1 alors on change la hauteur de zone1*/
-						document.getElementById("zone1").style.height=valeur+'px';
-						break;
-					case 2: /*si champ vaut 2 alors on change la hauteur de zone2*/
-						document.getElementById("zone2").style.height=valeur+'px';
-						break;
-					case 3: /*si champ vaut 2 alors on change la hauteur de zone3*/
-						document.getElementById("zone3").style.height=valeur+'px';
-						break;
-				}
-			}
-			// ]]>
-		</script>
+		<link rel="stylesheet" href="css/bootstrap.css" TYPE="text/css">
 		
 	</head>
 	<body>
 		<div class="container">
-			<h1>OpenKontrol</h1>
+            <h2><span class="label label-info">OpenKontrol</span></h2>
+            <br>
 			<div class="tabbable">
 				<ul class="nav nav-tabs">
-					<li><a href="#state" data-toggle="tab">State</a></li>
+					<li class="active"><a href="#state" data-toggle="tab">State</a></li>
 					<li><a href="#leds" data-toggle="tab">LEDs</a></li>
 					<li><a href="#tts" data-toggle="tab">TTS</a></li>
 					<li><a href="#radio" data-toggle="tab">Radio</a></li>
@@ -127,21 +47,23 @@
 					</div>
 					 
 					 
-					<div class="tab-pane" id="tts">
+					<div class="tab-pane active" id="tts">
 						<h2>TTS</h2>
-						<div id="alerts"></div>
-						<form name="tts" method="post" onsubmit="return redict();">
+                        <div id="alert" class="alert alert-success alert-dismissable" style="display:none;">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                          <strong>Great !</strong> The message was sent successfully !
+                        </div>
+						<form name="tts" method="post" onsubmit="return speak_tts();" >
 							<div class="input-group">
 								<input type="text" name="dest" id="dest" value="Je suis un lapin libre !" class="form-control"/>
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" id="speak" name="speak" value="speak" onclick="redict()">
+									<button class="btn btn-default" type="button" id="speak" name="speak" value="speak" onclick="speak_tts()">
 										<img class="image" width="20px" src="img/tts.png"/>
 									</button>
 								</span>
 							</div>
 							<br>
 							<div class="btn-group text-center" data-toggle="buttons">
-
 								<label class="btn btn-primary">
 									<input type="radio" name="tts" value="claire" checked/>Claire<br>
 								</label>			
@@ -184,7 +106,7 @@
 							<br>
 							<div class="btn-group text-center" align="center" data-toggle="buttons">
 								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire Et Chanson<br>
+								<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire Et Chanson<br>
 								</label>
 								<label class="btn btn-primary">
 									<input type="radio" name="play" value="http://streaming.radio.rtl.fr/rtl-1-44-96"/>RTL<br>
@@ -202,7 +124,7 @@
 									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/nrj/all/nrj_113225.mp3"/>NRJ<br>
 								</label>
 								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/cherie_fm/all/che_124310.mp3"/>Ch�rie FM<br>
+									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/cherie_fm/all/che_124310.mp3"/>Chérie FM<br>
 								</label>
 								<label class="btn btn-primary">
 									<input type="radio" name="play" value="http://stream5.nrj.yacast.net/virginradio"/>Virgin Radio<br>
@@ -400,6 +322,81 @@
 			</div> 
 		</div>
 		<hr>
-		<small>Made by Massallia, interface simplified and bootstraped by <a href="www.tobios.org">Tobios</a>.</small>
+		<small>Made by <strong>Massallia</strong>, interface simplified and bootstraped by <strong><a href="www.tobios.org">Tobios</a></strong>.</small>
 	</body>
+    <footer>
+        <!-- On met les scripts à la fin du code pour charger plus rapidement le HTML -->
+        <script type="text/javascript">
+            function speak_tts() {
+                $("#alert").fadeTo(0, 500).slideDown(500, function(){$(this).show();});
+                window.setTimeout(function() {
+                    $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).hide(); 
+                    });
+                }, 4000);
+
+                var tts = findSelection("tts");
+                dest = document.getElementById('dest').value;
+                window.open(
+              'cgi-bin/tts?text='+dest+'&voice='+tts,
+              'result' 
+                );
+            }
+            
+            function findSelection(field) {
+                var tts = document.getElementsByName(field);
+                var sizes = tts.length;
+    
+                
+                    for (i=0; i < sizes; i++) {
+                        if (tts[i].checked==true) {     
+                        return tts[i].value;
+                    }
+                }
+            }
+
+        </script>
+        <script type="text/javascript">
+            function radio() {
+                var play =  findSelection("play");
+                window.open(
+                    'cgi-bin/sound?url='+play,
+                    'result' 
+                );
+                
+            }
+    
+            function findSelection(field) {
+                var play = document.getElementsByName(field);
+                var sizes = play.length;
+    
+                
+                    for (i=0; i < sizes; i++) {
+                        if (play[i].checked==true) {     
+                        return play[i].value;
+                    }
+                }
+            }
+        </script>
+        <script type="text/javascript">
+            function deroule(champ,valeur)
+            {/*valeur est la hauteur en pixel de la zone*/
+                switch (champ)
+                {
+                    case 1: /*si champ vaut 1 alors on change la hauteur de zone1*/
+                        document.getElementById("zone1").style.height=valeur+'px';
+                        break;
+                    case 2: /*si champ vaut 2 alors on change la hauteur de zone2*/
+                        document.getElementById("zone2").style.height=valeur+'px';
+                        break;
+                    case 3: /*si champ vaut 2 alors on change la hauteur de zone3*/
+                        document.getElementById("zone3").style.height=valeur+'px';
+                        break;
+                }
+            }
+            // ]]>
+        </script>
+        <script src="js/jquery-2.0.3.js"></script>
+        <script src="js/bootstrap.js"></script>
+    </footer>
 </html>
