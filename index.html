@@ -1,26 +1,405 @@
-<!DOCTYPE html><html lang="fr">
-<HTML>
-	<HEAD>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
 		<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.jpg" />
-		<title>Open Karotz</title>
-		<meta charset="utf-8">
-		<LINK href="index.css" rel="stylesheet" type="text/css">
-	</HEAD>
-	<BODY>
-		<br>
-		<img width="600px" src="img/openkarotz.png" />
-		<br>
-		<br>
-		<a class="btn-ka" href="api.html"> 
-			<img width="300px" SRC='img/karotz.jpg'></img> <br>Click to enter<br>
-		</a>
-		<br>
-			<a class="btn-ka" href="cgi-bin/wakeup?silent=1"> 
-		<img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"></img>
-			</a>
-		<a class="btn-ka" href="cgi-bin/sleep"> 
-			<img width="50px" SRC='img/turn off.png' alt="Shutdown the karotz"></img>
-		</a>
-	</BODY>
-</HTML>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>OpenKontrol</title>
+		<link rel="stylesheet" href="style.css" TYPE="text/css">
+		<link rel="stylesheet" href="css/bootstrap.css" TYPE="text/css">
+		
+	</head>
+	<body>
+        <div class="jumbotro">
+		<div class="container">
+            <h2><span class="label label-info">OpenKontrol</span></h2>
+            <br>
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#state" data-toggle="tab">State</a></li>
+					<li><a href="#leds" data-toggle="tab">LEDs</a></li>
+					<li><a href="#tts" data-toggle="tab">TTS</a></li>
+					<li><a href="#radio" data-toggle="tab">Radio</a></li>
+					<li><a href="#ears" data-toggle="tab">Ears</a></li>
+					<li><a href="#rfid" data-toggle="tab">RFID</a></li>
+					<li><a href="#settings" data-toggle="tab">Advanced</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="state">
+						<h2>State</h2>
+						<ul>
+                            <a href="cgi-bin/wakeup?silent=1"> 
+                                <img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"/>
+                            </a>
+                            <a href="cgi-bin/sleep"> 
+                                <img width="50px" SRC='img/turn off.png' alt="Shutdown the karotz"/>
+                            </a>
+							<li><A target="result" HREF="/cgi-bin/reboot">Reboot</A></li>
+							<!-- <LI><A target="result" HREF="/cgi-bin/status">Status</A></LI>-->
+						</ul>
+					</div>
+
+					<div class="tab-pane" id="leds">
+						<h2>Leds</h2>
+						<h4>Command LED <A class="btn btn-danger" target="result" HREF="/cgi-bin/leds?color=000000">Off</A></h2>
+						<br>
+						<strong>Fixed</strong>
+						<br>
+						<A class="btn" target="result" HREF="/cgi-bin/leds?color=FF0000"><img src="img/red.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=77FF00"><img src="img/yellow.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=FFFF00"><img src="img/orange.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=00FF00"><img src="img/green.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=0000FF"><img src="img/blue.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=FF00FF"><img src="img/pink.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=00FFFF"><img src="img/blue2.png"></A>
+						<br>
+						<strong>Pulse</strong>
+						<br>
+						<A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FF0000"><img src="img/red.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=77FF00"><img src="img/yellow.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FFFF00"><img src="img/orange.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=00FF00"><img src="img/green.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=0000FF"><img src="img/blue.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FF00FF"><img src="img/pink.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color="><img src="img/blue2.png"></A>
+					</div>
+					 
+					 
+					<div class="tab-pane" id="tts">
+						<h2>TTS</h2>
+                        <div id="alert" class="alert alert-success alert-dismissable" style="display:none;">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                          <strong>Great !</strong> The message was sent successfully !
+                        </div>
+						<form name="tts" method="post" onsubmit="return speak_tts();" >
+							<div class="input-group">
+								<input type="text" name="dest" id="dest" value="Je suis un lapin libre !" class="form-control"/>
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" id="speak" name="speak" value="speak" onclick="speak_tts()">
+										<img class="image" width="20px" src="img/tts.png"/>
+									</button>
+								</span>
+							</div>
+							<br>
+							<div class="btn-group text-center" data-toggle="buttons">
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="claire" checked/>Claire<br>
+								</label>			
+								<label class="btn btn-primary">								
+									<input type="radio" name="tts" value="margaux"/>Margaux<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="margauxsad"/>Margaux Sad<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="margauxhappy"/>Margaux Happy<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="antoine"/>Antoine<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="bruno"/>Bruno<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="alice"/>Alice<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="tts" value="julie"/>Julie<br>
+								</label>	
+							</div>
+						</form>
+					</div>
+					  
+					   
+					<div class="tab-pane" id="radio">
+						<h2>Radio</h2>
+						<form name="radiof" method="post" onsubmit="return radio();">
+							<div class="btn-group text-center" align="center">
+								<button type="button" class="btn btn-info" name="play" value="Play" onclick="radio()">
+									<img width="30px" src="img/play.png"/>
+								</button>
+								<A target="result" class="btn btn-warning" HREF='/cgi-bin/sound_control?cmd=quit'><IMG width='30px' SRC='img/stop.png'/></A>
+							</div>
+							<br>
+							<br>
+							<div class="btn-group text-center" align="center" data-toggle="buttons">
+								<label class="btn btn-primary">
+								<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire Et Chanson<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://streaming.radio.rtl.fr/rtl-1-44-96"/>RTL<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://vipicecast.yacast.net/rmc"/>RMC<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://vipicecast.yacast.net/europe1"/>Europe 1<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://streaming.radio.rtl2.fr/rtl2-1-44-96"/>RTL2<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/nrj/all/nrj_113225.mp3"/>NRJ<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/cherie_fm/all/che_124310.mp3"/>Chérie FM<br>
+								</label>
+								<label class="btn btn-primary">
+									<input type="radio" name="play" value="http://stream5.nrj.yacast.net/virginradio"/>Virgin Radio<br>
+								</label>
+							</div>
+						</form>
+					</div>       
+					  
+					<div class="tab-pane" id="ears">
+						<h2>Ears</h2>
+						<UL>
+							<LI><A target="result" HREF='/cgi-bin/ears_reset'>Reset</A></LI>
+							<LI><A target="result" HREF='/cgi-bin/ears_random'>Random Ears</A></LI>
+							<LI><A target="result" HREF='/cgi-bin/ears?left=5&right=5'>Horizontal Ears</A></LI>
+							<br>
+							<LI><A target="result" HREF='/cgi-bin/ears_mode?disable=1'>Disable ears</A></LI>
+							<LI><A target="result" HREF='/cgi-bin/ears_mode?disable=0'>Enable Ears</A></LI>
+						</UL>
+					</div>
+								 
+					<div class="tab-pane" id="rfid">
+						<h2>RFID</h2>
+						<br>
+						<div class="panel-group">
+						<div id="zone1" class="panel panel-default">
+							<div id="texteder" onclick="deroule(1,220);" ondblclick="deroule(1,40);" class="panel-heading">
+								<h4 class="panel-title">Assign tag to URL</h4>
+							</div>
+							<div id="rurl" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_url" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+										<TABLE>
+											<TR>
+												<TD>Tag ID:
+												<TD>
+												<INPUT name="tag" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>URL:
+												<TD>
+												<INPUT name="url" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Name:
+												<TD>
+												<INPUT name="name" class="form-control input-sm">
+											</TR>
+											<TR>
+											
+											<TD COLSPAN="2">
+												<br>
+												<INPUT type="submit" class="btn btn-primary" value="Submit">
+												<INPUT type="button" class="btn btn-danger"onclick="deroule(1,40);" value="Close">
+											</TR>
+										</TABLE>
+									</FORM>
+								</div>
+							</div>
+						</div>
+						<div id="zone2" class="panel panel-default">
+							<div id="texteder" onclick="deroule(2,315);" ondblclick="deroule(2,40);" class="panel-heading">
+								<h4 class="panel-title">Assign tag to Eedomus macro</h4>
+							</div>
+							<div id="reedomus" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_eedomus_macro" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+										<TABLE>
+											<TR>
+												<TD>Tag ID:
+												<TD>
+												<INPUT name="tag" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Eedomus IP:
+												<TD>
+												<INPUT name="ip" placeholder="We use local API" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Scene ID:
+												<TD>
+												<INPUT name="macro" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Api User:
+												<TD><INPUT name="user" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Api Secret:
+												<TD><INPUT type="password" name="password" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Name:
+												<TD><INPUT name="name" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD COLSPAN="2">
+												<br>
+												<INPUT type="submit" class="btn btn-primary" value="Submit">
+												<INPUT type="button" class="btn btn-danger"onclick="deroule(2,40);" value="Close">
+											</TR>
+										</TABLE>
+									</FORM>
+								</div>
+							</div>
+						</div>
+						<div id="zone3" class="panel panel-default">
+							<div id="texteder" onclick="deroule(3,230);" ondblclick="deroule(3,40);" class="panel-heading">
+								<h4 class="panel-title">Assign tag to Vera scene</h4>
+							</div>
+							<div id="rvera" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_vera_scene" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+										<TABLE>
+											<TR>
+												<TD>Tag ID:
+												<TD>
+												<INPUT name="tag" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Vera IP:
+												<TD>
+												<INPUT name="ip" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Scene ID:
+												<TD>
+												<INPUT name="scene" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD>Name:
+												<TD><INPUT name="name" class="form-control input-sm">
+											</TR>
+											<TR>
+												<TD COLSPAN="2">
+												<INPUT type="submit" class="btn btn-primary" value="Submit">
+												<INPUT type="button" class="btn btn-danger"onclick="deroule(3,40);" value="Close">
+											</TR>
+										</TABLE>
+									</FORM>
+								</div>
+							</div>
+						</div>
+						</div>
+						<br>
+						<UL>
+							<LI><A target="result" HREF='/cgi-bin/rfid_start_record'>Start RFID Tag recording</A></LI>
+							<LI><A target="result" HREF='/cgi-bin/rfid_stop_record'>Stop RFID Tag recording</A></LI>
+						</UL>
+						
+						<UL>
+							<LI><A target="result" HREF="/cgi-bin/rfid_list">Registred Tag List</A></LI>
+							<LI><A HREF='/rfid_info.html'>Get Tag Informations</A></LI>
+							<LI><A HREF='/rfid_unassign.html'>Unassign Tag</A></LI>
+						</UL>
+						<UL>
+							<LI><A HREF='/cgi-bin/rfid_backup'>Backup RFID Informations</A></LI>
+						</UL>
+					
+						
+					</div>
+					 
+					<div class="tab-pane" id="settings">
+						<h2>Advanced</h2>
+						<UL>
+							<LI><A target="result" HREF="/cgi-bin/update?usb=1">Update</A></LI>
+
+							<!--
+							<LI><A target="result" HREF="/cgi-bin/update?usb=1">Update (Scripts & Usb Key)</A></LI>
+							</UL>
+							<UL>Forced 
+							<LI><A target="result" HREF="/cgi-bin/update?force=1">Update (Scripts)</A></LI>
+							<LI><A target="result" HREF="/cgi-bin/update?force=1&usb=1">Update (Scripts & Usb Key)</A></LI>
+							-->
+						</UL>
+						<UL>Installation
+							<LI><A target="result" HREF="/cgi-bin/reset_install_flag">Reset Installation Flag</A></LI>
+						</UL>
+						<UL>
+							<LI><A target="result" HREF="/cgi-bin/display_cache">Show TTS Cache</A></LI>
+							<LI><A target="result" HREF="/cgi-bin/clear_cache">Clear TTS Cache</A></LI>
+						</UL>
+					</div>
+				</div>
+				 
+				<P>
+				<BR>
+				<h3>Reply :</h3>
+				<IFRAME NAME="result" width="100%"></IFRAME>
+				<BR>
+				<P/>
+			</div> 
+		</div>
+        </div>
+		<hr>
+		<small>Made by <strong>Massallia</strong>, interface simplified and bootstraped by <strong><a href="www.tobios.org">Tobios</a></strong>.</small>
+	</body>
+    <footer>
+        <!-- On met les scripts à la fin du code pour charger plus rapidement le HTML -->
+        <script type="text/javascript">
+            function speak_tts() {
+                $("#alert").fadeTo(0, 500).slideDown(500, function(){$(this).show();});
+                window.setTimeout(function() {
+                    $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).hide(); 
+                    });
+                }, 4000);
+
+                var tts = findSelection("tts");
+                dest = document.getElementById('dest').value;
+                window.open(
+              'cgi-bin/tts?text='+dest+'&voice='+tts,
+              'result' 
+                );
+            }
+            
+            function findSelection(field) {
+                var tts = document.getElementsByName(field);
+                var sizes = tts.length;
+    
+                
+                    for (i=0; i < sizes; i++) {
+                        if (tts[i].checked==true) {     
+                        return tts[i].value;
+                    }
+                }
+            }
+
+        </script>
+        <script type="text/javascript">
+            function radio() {
+                var play =  findSelection("play");
+                window.open(
+                    'cgi-bin/sound?url='+play,
+                    'result' 
+                );
+                
+            }
+    
+            function findSelection(field) {
+                var play = document.getElementsByName(field);
+                var sizes = play.length;
+    
+                
+                    for (i=0; i < sizes; i++) {
+                        if (play[i].checked==true) {     
+                        return play[i].value;
+                    }
+                }
+            }
+        </script>
+        <script type="text/javascript">
+            function deroule(champ,valeur)
+            {/*valeur est la hauteur en pixel de la zone*/
+                switch (champ)
+                {
+                    case 1: /*si champ vaut 1 alors on change la hauteur de zone1*/
+                        document.getElementById("zone1").style.height=valeur+'px';
+                        break;
+                    case 2: /*si champ vaut 2 alors on change la hauteur de zone2*/
+                        document.getElementById("zone2").style.height=valeur+'px';
+                        break;
+                    case 3: /*si champ vaut 2 alors on change la hauteur de zone3*/
+                        document.getElementById("zone3").style.height=valeur+'px';
+                        break;
+                }
+            }
+            // ]]>
+        </script>
+        <script src="js/jquery-2.0.3.js"></script>
+        <script src="js/bootstrap.js"></script>
+    </footer>
+</html>
