@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 	<head>
 		<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.jpg" />
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>OpenKontrol</title>
 		<link rel="stylesheet" href="style.css" TYPE="text/css">
 		<link rel="stylesheet" href="css/bootstrap.css" TYPE="text/css">
@@ -13,23 +12,23 @@
             <h2><span class="label label-info">OpenKontrol</span></h2>
             <br>
 			<div class="tabbable">
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs nav-justified">
 					<li class="active"><a href="#state" data-toggle="tab">State</a></li>
 					<li><a href="#leds" data-toggle="tab">LEDs</a></li>
 					<li><a href="#tts" data-toggle="tab">TTS</a></li>
 					<li><a href="#radio" data-toggle="tab">Radio</a></li>
 					<li><a href="#ears" data-toggle="tab">Ears</a></li>
 					<li><a href="#rfid" data-toggle="tab">RFID</a></li>
-					<li><a href="#settings" data-toggle="tab">Advanced</a></li>
+					<li><a href="#settings" data-toggle="tab">More</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="state">
 						<h2>State</h2>
 						<ul>
-                            <a href="cgi-bin/wakeup?silent=1"> 
+                            <a target="result" href="cgi-bin/wakeup?silent=1"> 
                                 <img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"/>
                             </a>
-                            <a href="cgi-bin/sleep"> 
+                            <a target="result" href="cgi-bin/sleep"> 
                                 <img width="50px" SRC='img/turn off.png' alt="Shutdown the karotz"/>
                             </a>
 							<li><A target="result" HREF="/cgi-bin/reboot">Reboot</A></li>
@@ -39,15 +38,27 @@
 
 					<div class="tab-pane" id="leds">
 						<h2>Leds</h2>
-						<h4>Command LED <A class="btn btn-danger" target="result" HREF="/cgi-bin/leds?color=000000">Off</A></h2>
+						<h4>Command LED <a class="btn btn-danger" target="result" HREF="/cgi-bin/leds?color=000000">Off</a></h2>
 						<br>
 						<strong>Fixed</strong>
 						<br>
-						<A class="btn" target="result" HREF="/cgi-bin/leds?color=FF0000"><img src="img/red.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=77FF00"><img src="img/yellow.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=FFFF00"><img src="img/orange.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=00FF00"><img src="img/green.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=0000FF"><img src="img/blue.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=FF00FF"><img src="img/pink.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?color=00FFFF"><img src="img/blue2.png"></A>
+						<A target="result" HREF="/cgi-bin/leds?color=FF0000"><img src="img/red.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=77FF00"><img src="img/yellow.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=FFFF00"><img src="img/orange.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=00FF00"><img src="img/green.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=0000FF"><img src="img/blue.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=FF00FF"><img src="img/pink.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?color=00FFFF"><img src="img/blue2.png"></A>
 						<br>
 						<strong>Pulse</strong>
 						<br>
-						<A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FF0000"><img src="img/red.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=77FF00"><img src="img/yellow.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FFFF00"><img src="img/orange.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=00FF00"><img src="img/green.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=0000FF"><img src="img/blue.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color=FF00FF"><img src="img/pink.png"></A><A class="btn" target="result" HREF="/cgi-bin/leds?pulse=1&color="><img src="img/blue2.png"></A>
+						<A target="result" HREF="/cgi-bin/leds?pulse=1&color=FF0000"><img src="img/red.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=77FF00"><img src="img/yellow.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=FFFF00"><img src="img/orange.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=00FF00"><img src="img/green.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=0000FF"><img src="img/blue.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=FF00FF"><img src="img/pink.png"></A>
+                        <A target="result" HREF="/cgi-bin/leds?pulse=1&color=00FFFF"><img src="img/blue2.png"></A>
 					</div>
 					 
 					 
@@ -67,7 +78,7 @@
 								</span>
 							</div>
 							<br>
-							<div class="btn-group text-center" data-toggle="buttons">
+							<div class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-primary">
 									<input type="radio" name="tts" value="claire" checked/>Claire<br>
 								</label>			
@@ -108,9 +119,9 @@
 							</div>
 							<br>
 							<br>
-							<div class="btn-group text-center" align="center" data-toggle="buttons">
+							<div class="btn-group btn-group-justified" data-toggle="buttons">
 								<label class="btn btn-primary">
-								<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire Et Chanson<br>
+								<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire & Chanson<br>
 								</label>
 								<label class="btn btn-primary">
 									<input type="radio" name="play" value="http://streaming.radio.rtl.fr/rtl-1-44-96"/>RTL<br>
@@ -309,9 +320,9 @@
 						<UL>Installation
 							<LI><A target="result" HREF="/cgi-bin/reset_install_flag">Reset Installation Flag</A></LI>
 						</UL>
-						<UL>
-							<LI><A target="result" HREF="/cgi-bin/clear_cache">Clear TTS Cache</A></LI>
-						</UL>
+                        <a class="btn btn-danger" target="result" href="/cgi-bin/clear_cache">
+                          <span class="glyphicon glyphicon-trash"></span> Clear TTS Cache
+                        </a>
 					</div>
 				</div>
 
@@ -322,13 +333,12 @@
 				    </div>
 				    <div id="show_reply" class="panel-collapse collapse">
                         <div class="panel-body">
-                                <IFRAME NAME="result" width="100%"></IFRAME>
+                                <iframe NAME="result" width="100%"></iframe>
                         </div>
                     </div>
                 </div>
 			</div> 
 		</div>
-		<hr>
 		<small>Made by <strong>Massallia</strong>, interface simplified and bootstraped by <strong><a href="www.tobios.org">Tobios</a></strong>.</small>
 	</body>
     <footer>

@@ -3221,12 +3221,21 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav-tabs.nav-justified > li > a {
   text-align: center;
 }
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
+  .nav-tabs.nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+} */
+
+/* Custom nav justified */
+@media (min-width: 465px) {
   .nav-tabs.nav-justified > li {
     display: table-cell;
     width: 1%;
   }
 }
+
 .nav-tabs.nav-justified > li > a {
   border-bottom: 1px solid #dddddd;
   margin-right: 0;
