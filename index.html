@@ -10,7 +10,6 @@
 		
 	</head>
 	<body>
-        <div class="jumbotro">
 		<div class="container">
             <h2><span class="label label-info">OpenKontrol</span></h2>
             <br>
@@ -154,141 +153,146 @@
 					<div class="tab-pane" id="rfid">
 						<h2>RFID</h2>
 						<br>
-						<div class="panel-group">
-						<div id="zone1" class="panel panel-default">
-							<div id="texteder" onclick="deroule(1,220);" ondblclick="deroule(1,40);" class="panel-heading">
-								<h4 class="panel-title">Assign tag to URL</h4>
-							</div>
-							<div id="rurl" class="panel-collapse collapse in">
-								<div class="panel-body">
-									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_url" ENCTYPE="x-www-form-urlencoded" class="form-inline">
-										<TABLE>
-											<TR>
-												<TD>Tag ID:
-												<TD>
-												<INPUT name="tag" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>URL:
-												<TD>
-												<INPUT name="url" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Name:
-												<TD>
-												<INPUT name="name" class="form-control input-sm">
-											</TR>
-											<TR>
-											
-											<TD COLSPAN="2">
-												<br>
-												<INPUT type="submit" class="btn btn-primary" value="Submit">
-												<INPUT type="button" class="btn btn-danger"onclick="deroule(1,40);" value="Close">
-											</TR>
-										</TABLE>
-									</FORM>
-								</div>
-							</div>
-						</div>
-						<div id="zone2" class="panel panel-default">
-							<div id="texteder" onclick="deroule(2,315);" ondblclick="deroule(2,40);" class="panel-heading">
-								<h4 class="panel-title">Assign tag to Eedomus macro</h4>
-							</div>
-							<div id="reedomus" class="panel-collapse collapse in">
-								<div class="panel-body">
-									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_eedomus_macro" ENCTYPE="x-www-form-urlencoded" class="form-inline">
-										<TABLE>
-											<TR>
-												<TD>Tag ID:
-												<TD>
-												<INPUT name="tag" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Eedomus IP:
-												<TD>
-												<INPUT name="ip" placeholder="We use local API" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Scene ID:
-												<TD>
-												<INPUT name="macro" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Api User:
-												<TD><INPUT name="user" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Api Secret:
-												<TD><INPUT type="password" name="password" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Name:
-												<TD><INPUT name="name" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD COLSPAN="2">
-												<br>
-												<INPUT type="submit" class="btn btn-primary" value="Submit">
-												<INPUT type="button" class="btn btn-danger"onclick="deroule(2,40);" value="Close">
-											</TR>
-										</TABLE>
-									</FORM>
-								</div>
-							</div>
-						</div>
-						<div id="zone3" class="panel panel-default">
-							<div id="texteder" onclick="deroule(3,230);" ondblclick="deroule(3,40);" class="panel-heading">
-								<h4 class="panel-title">Assign tag to Vera scene</h4>
-							</div>
-							<div id="rvera" class="panel-collapse collapse in">
-								<div class="panel-body">
-									<FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_vera_scene" ENCTYPE="x-www-form-urlencoded" class="form-inline">
-										<TABLE>
-											<TR>
-												<TD>Tag ID:
-												<TD>
-												<INPUT name="tag" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Vera IP:
-												<TD>
-												<INPUT name="ip" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Scene ID:
-												<TD>
-												<INPUT name="scene" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD>Name:
-												<TD><INPUT name="name" class="form-control input-sm">
-											</TR>
-											<TR>
-												<TD COLSPAN="2">
-												<INPUT type="submit" class="btn btn-primary" value="Submit">
-												<INPUT type="button" class="btn btn-danger"onclick="deroule(3,40);" value="Close">
-											</TR>
-										</TABLE>
-									</FORM>
-								</div>
-							</div>
-						</div>
-						</div>
-						<br>
-						<UL>
-							<LI><A target="result" HREF='/cgi-bin/rfid_start_record'>Start RFID Tag recording</A></LI>
-							<LI><A target="result" HREF='/cgi-bin/rfid_stop_record'>Stop RFID Tag recording</A></LI>
-						</UL>
-						
-						<UL>
-							<LI><A target="result" HREF="/cgi-bin/rfid_list">Registred Tag List</A></LI>
-							<!-- <LI><A HREF='/rfid_info.html'>Get Tag Informations</A></LI>
-							<LI><A HREF='/rfid_unassign.html'>Unassign Tag</A></LI> -->
-							<LI><A HREF='/cgi-bin/rfid_backup'>Backup RFID Informations</A></LI>
-						</UL>
-					
-						
-					</div>
+						<div class="panel-group" id="assign_rfid">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#assign_rfid" href="#assign_url">Assign tag to URL</a></h4>
+                                        </div>
+                                        <div id="assign_url" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_url" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+                                                    <TABLE>
+                                                        <TR>
+                                                            <TD>Tag ID:
+                                                            <TD>
+                                                            <INPUT name="tag" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>URL:
+                                                            <TD>
+                                                            <INPUT name="url" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Name:
+                                                            <TD>
+                                                            <INPUT name="name" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                        
+                                                        <TD COLSPAN="2">
+                                                            <br>
+                                                            <INPUT type="submit" class="btn btn-primary" value="Submit">
+                                                        </TR>
+                                                    </TABLE>
+                                                </FORM>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#assign_rfid" href="#assign_eedomus">Assign tag to Eedomus macro</a></h4>
+                                        </div>
+                                        <div id="assign_eedomus" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <FORM target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_eedomus_macro" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+                                                    <TABLE>
+                                                        <TR>
+                                                            <TD>Tag ID:
+                                                            <TD>
+                                                            <INPUT name="tag" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Eedomus IP:
+                                                            <TD>
+                                                            <INPUT name="ip" placeholder="We use local API" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Scene ID:
+                                                            <TD>
+                                                            <INPUT name="macro" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Api User:
+                                                            <TD><INPUT name="user" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Api Secret:
+                                                            <TD><INPUT type="password" name="password" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Name:
+                                                            <TD><INPUT name="name" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD COLSPAN="2">
+                                                            <br>
+                                                            <INPUT type="submit" class="btn btn-primary" value="Submit">
+                                                        </TR>
+                                                    </TABLE>
+                                                </FORM>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#assign_rfid" href="#assign_vera">Assign tag to Vera scene</a></h4>
+                                        </div>
+                                        <div id="assign_vera" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <form target="result" METHOD="GET" ACTION="cgi-bin/rfid_assign_vera_scene" ENCTYPE="x-www-form-urlencoded" class="form-inline">
+                                                    <table>
+                                                        <TR>
+                                                            <TD>Tag ID:
+                                                            <TD>
+                                                            <INPUT name="tag" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Vera IP:
+                                                            <TD>
+                                                            <INPUT name="ip" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Scene ID:
+                                                            <TD>
+                                                            <INPUT name="scene" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD>Name:
+                                                            <TD><INPUT name="name" class="form-control input-sm">
+                                                        </TR>
+                                                        <TR>
+                                                            <TD COLSPAN="2">
+                                                            <INPUT type="submit" class="btn btn-primary" value="Submit">
+                                                        </TR>
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div>
+                            <br>
+                            <UL>
+                                <LI><A target="result" HREF='/cgi-bin/rfid_start_record'>Start RFID Tag recording</A></LI>
+                                <LI><A target="result" HREF='/cgi-bin/rfid_stop_record'>Stop RFID Tag recording</A></LI>
+                            </UL>
+                            
+                            <UL>
+                                <LI><A target="result" HREF="/cgi-bin/rfid_list">Registred Tag List</A></LI>
+                                <!-- <LI><A HREF='/rfid_info.html'>Get Tag Informations</A></LI>
+                                <LI><A HREF='/rfid_unassign.html'>Unassign Tag</A></LI> -->
+                                <LI><A HREF='/cgi-bin/rfid_backup'>Backup RFID Informations</A></LI>
+                            </UL>
+                        
+                            
+                        </div>
+                    </div>
 					 
 					<div class="tab-pane" id="settings">
 						<h2>Advanced</h2>
@@ -311,24 +315,20 @@
 						</UL>
 					</div>
 				</div>
-				 
-				<P>
-				<BR>
-                <div id="reply" class="panel panel-default">
-                    <div id="texteder" onclick="deroule(4,230);" ondblclick="deroule(4,40);" class="panel-heading">
-				        <h4 class="panel-title">View Reply</h4>
+
+				<br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+				        <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#show_reply" href="#show_reply">View Reply</a></h4>
 				    </div>
-				    <div id="p_reply" class="panel-collapse collapse in">
+				    <div id="show_reply" class="panel-collapse collapse">
                         <div class="panel-body">
                                 <IFRAME NAME="result" width="100%"></IFRAME>
                         </div>
                     </div>
                 </div>
-				<BR>
-				<P/>
 			</div> 
 		</div>
-        </div>
 		<hr>
 		<small>Made by <strong>Massallia</strong>, interface simplified and bootstraped by <strong><a href="www.tobios.org">Tobios</a></strong>.</small>
 	</body>
@@ -385,27 +385,6 @@
                     }
                 }
             }
-        </script>
-        <script type="text/javascript">
-            function deroule(champ,valeur)
-            {/*valeur est la hauteur en pixel de la zone*/
-                switch (champ)
-                {
-                    case 1: /*si champ vaut 1 alors on change la hauteur de zone1*/
-                        document.getElementById("zone1").style.height=valeur+'px';
-                        break;
-                    case 2: /*si champ vaut 2 alors on change la hauteur de zone2*/
-                        document.getElementById("zone2").style.height=valeur+'px';
-                        break;
-                    case 3: /*si champ vaut 2 alors on change la hauteur de zone3*/
-                        document.getElementById("zone3").style.height=valeur+'px';
-                        break;
-                    case 4: /*si champ vaut 2 alors on change la hauteur de reply*/
-                        document.getElementById("reply").style.height=valeur+'px';
-                        break;
-                }
-            }
-            // ]]>
         </script>
         <script src="js/jquery-2.0.3.js"></script>
         <script src="js/bootstrap.js"></script>
