@@ -282,10 +282,8 @@
 						
 						<UL>
 							<LI><A target="result" HREF="/cgi-bin/rfid_list">Registred Tag List</A></LI>
-							<LI><A HREF='/rfid_info.html'>Get Tag Informations</A></LI>
-							<LI><A HREF='/rfid_unassign.html'>Unassign Tag</A></LI>
-						</UL>
-						<UL>
+							<!-- <LI><A HREF='/rfid_info.html'>Get Tag Informations</A></LI>
+							<LI><A HREF='/rfid_unassign.html'>Unassign Tag</A></LI> -->
 							<LI><A HREF='/cgi-bin/rfid_backup'>Backup RFID Informations</A></LI>
 						</UL>
 					
@@ -309,7 +307,6 @@
 							<LI><A target="result" HREF="/cgi-bin/reset_install_flag">Reset Installation Flag</A></LI>
 						</UL>
 						<UL>
-							<LI><A target="result" HREF="/cgi-bin/display_cache">Show TTS Cache</A></LI>
 							<LI><A target="result" HREF="/cgi-bin/clear_cache">Clear TTS Cache</A></LI>
 						</UL>
 					</div>
@@ -317,8 +314,16 @@
 				 
 				<P>
 				<BR>
-				<h3>Reply :</h3>
-				<IFRAME NAME="result" width="100%"></IFRAME>
+                <div id="reply" class="panel panel-default">
+                    <div id="texteder" onclick="deroule(4,230);" ondblclick="deroule(4,40);" class="panel-heading">
+				        <h4 class="panel-title">View Reply</h4>
+				    </div>
+				    <div id="p_reply" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                                <IFRAME NAME="result" width="100%"></IFRAME>
+                        </div>
+                    </div>
+                </div>
 				<BR>
 				<P/>
 			</div> 
@@ -394,6 +399,9 @@
                         break;
                     case 3: /*si champ vaut 2 alors on change la hauteur de zone3*/
                         document.getElementById("zone3").style.height=valeur+'px';
+                        break;
+                    case 4: /*si champ vaut 2 alors on change la hauteur de reply*/
+                        document.getElementById("reply").style.height=valeur+'px';
                         break;
                 }
             }

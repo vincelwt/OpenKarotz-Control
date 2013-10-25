@@ -23,6 +23,14 @@
 	overflow: hidden;
 } 
 
+#reply {
+	height: 40px; 
+	transition: height 0.5s; 
+	-moz-transition: height 0.5s;
+	-webkit-transition: height 0.5s;
+	-o-transition: height 0.5s; 
+	overflow: hidden;
+} 
 
 
 h1 {
