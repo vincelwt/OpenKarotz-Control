@@ -3211,6 +3211,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border-bottom-color: transparent;
   cursor: default;
 }
+
+
+
+/* Responsive nav justified */
+@media (max-width: 900px) {
+
 .nav-tabs.nav-justified {
   width: 100%;
   border-bottom: 0;
@@ -3229,7 +3235,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 } */
 
 /* Custom nav justified */
-@media (min-width: 465px) {
+@media (min-width: 400px) {
   .nav-tabs.nav-justified > li {
     display: table-cell;
     width: 1%;
@@ -3290,6 +3296,11 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav-tabs-justified > .active > a {
   border-bottom-color: #ffffff;
 }
+
+}
+
+
+
 .tabbable:before,
 .tabbable:after {
   content: " ";

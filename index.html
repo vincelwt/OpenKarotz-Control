@@ -13,31 +13,54 @@
             <br>
 			<div class="tabbable">
 				<ul class="nav nav-tabs nav-justified">
-					<li class="active"><a href="#state" data-toggle="tab">State</a></li>
-					<li><a href="#leds" data-toggle="tab">LEDs</a></li>
+					<li class="active"><a href="#state" data-toggle="tab">Karotz</a></li>
+					<li><a href="#leds" data-toggle="tab">LED</a></li>
 					<li><a href="#tts" data-toggle="tab">TTS</a></li>
 					<li><a href="#radio" data-toggle="tab">Radio</a></li>
 					<li><a href="#ears" data-toggle="tab">Ears</a></li>
 					<li><a href="#rfid" data-toggle="tab">RFID</a></li>
-					<li><a href="#settings" data-toggle="tab">More</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="state">
-						<h2>State</h2>
-						<ul>
-                            <a target="result" href="cgi-bin/wakeup?silent=1"> 
-                                <img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"/>
-                            </a>
-                            <a target="result" href="cgi-bin/sleep"> 
-                                <img width="50px" SRC='img/turn off.png' alt="Shutdown the karotz"/>
-                            </a>
-							<li><A target="result" HREF="/cgi-bin/reboot">Reboot</A></li>
-							<!-- <LI><A target="result" HREF="/cgi-bin/status">Status</A></LI>-->
-						</ul>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>State</h2>
+                                <ul>
+                                    <a target="result" href="cgi-bin/wakeup?silent=1"> 
+                                        <img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"/>
+                                    </a>
+                                    <a target="result" href="cgi-bin/sleep"> 
+                                        <img width="50px" SRC='img/turn off.png' alt="Shutdown the karotz"/>
+                                    </a>
+                                    <li><A target="result" HREF="/cgi-bin/reboot">Reboot</A></li>
+                                    <!-- <LI><A target="result" HREF="/cgi-bin/status">Status</A></LI>-->
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h2>Advanced</h2>
+                                <UL>
+                                    <LI><A target="result" HREF="/cgi-bin/update?usb=1">Update</A></LI>
+        
+                                    <!--
+                                    <LI><A target="result" HREF="/cgi-bin/update?usb=1">Update (Scripts & Usb Key)</A></LI>
+                                    </UL>
+                                    <UL>Forced 
+                                    <LI><A target="result" HREF="/cgi-bin/update?force=1">Update (Scripts)</A></LI>
+                                    <LI><A target="result" HREF="/cgi-bin/update?force=1&usb=1">Update (Scripts & Usb Key)</A></LI>
+                                    -->
+                                </UL>
+                                <UL>Installation
+                                    <LI><A target="result" HREF="/cgi-bin/reset_install_flag">Reset Installation Flag</A></LI>
+                                </UL>
+                                <a class="btn btn-danger" target="result" href="/cgi-bin/clear_cache">
+                                  <span class="glyphicon glyphicon-trash"></span> Clear TTS Cache
+                                </a>
+                            </div>
+                        </div>
 					</div>
 
 					<div class="tab-pane" id="leds">
-						<h2>Leds</h2>
+						<h2>Led</h2>
 						<h4>Command LED <a class="btn btn-danger" target="result" HREF="/cgi-bin/leds?color=000000">Off</a></h2>
 						<br>
 						<strong>Fixed</strong>
