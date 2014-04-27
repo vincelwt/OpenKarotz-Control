@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+﻿<html>
 	<head>
 		<link rel="icon" type="image/jpeg" href="/favicon.jpg" />
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.jpg" />
@@ -13,18 +12,18 @@
             <br>
 			<div class="tabbable">
 				<ul class="nav nav-tabs nav-justified">
-					<li class="active"><a href="#state" data-toggle="tab">Karotz</a></li>
-					<li><a href="#leds" data-toggle="tab">LED</a></li>
-					<li><a href="#tts" data-toggle="tab">TTS</a></li>
-					<li><a href="#radio" data-toggle="tab">Radio</a></li>
-					<li><a href="#ears" data-toggle="tab">Ears</a></li>
-					<li><a href="#rfid" data-toggle="tab">RFID</a></li>
+					<li class="active"><a href="#state" data-toggle="tab">Karotz <span class="glyphicon glyphicon-home"/></a></li>
+					<li><a href="#leds" data-toggle="tab">LED <span class="glyphicon glyphicon-certificate"/></a></li>
+					<li><a href="#tts" data-toggle="tab">TTS <span class="glyphicon glyphicon-comment"/></a></li>
+					<li><a href="#radio" data-toggle="tab">Radio <span class="glyphicon glyphicon-headphones"/></a></li>
+					<li><a href="#ears" data-toggle="tab">Ears <span class="glyphicon glyphicon-resize-horizontal"/></a></li>
+					<li><a href="#rfid" data-toggle="tab">RFID <span class="glyphicon glyphicon-tags"/></a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="state">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2>State</h2>
+                                <h2>State  <span class="glyphicon glyphicon-home"/></h2>
                                 <ul>
                                     <a target="result" href="cgi-bin/wakeup?silent=1"> 
                                         <img width="50px" SRC='img/turn on.png' alt="Wake up the karotz"/>
@@ -39,10 +38,10 @@
                                 </ul>
                             </div>
                             <div class="col-sm-6">
-                                <h2>Advanced</h2>
-                                <UL>
-                                    <LI><A target="result" HREF="/cgi-bin/update?usb=1">Update</A></LI>
-        
+                                <h2>Advanced <span class="glyphicon glyphicon-cog"/></h2>
+                                    <!-- <a class="btn btn-success" target="result" href="/cgi-bin/update_kontrol">
+                                        <span class="glyphicon glyphicon-refresh"></span> Update
+                                    </a> -->
                                     <!--
                                     <LI><A target="result" HREF="/cgi-bin/update?usb=1">Update (Scripts & Usb Key)</A></LI>
                                     </UL>
@@ -50,10 +49,15 @@
                                     <LI><A target="result" HREF="/cgi-bin/update?force=1">Update (Scripts)</A></LI>
                                     <LI><A target="result" HREF="/cgi-bin/update?force=1&usb=1">Update (Scripts & Usb Key)</A></LI>
                                     -->
-                                </UL>
+                               
                                 <UL>Installation
                                     <LI><A target="result" HREF="/cgi-bin/reset_install_flag">Reset Installation Flag</A></LI>
                                 </UL>
+                                <!-- <a class="btn btn-primary" target="result" href="/cgi-bin/speak_time">
+                                  <span class="glyphicon glyphicon-time"></span> Say the hour automatically
+                                </a>
+                                <br>
+                                <br> -->
                                 <a class="btn btn-danger" target="result" href="/cgi-bin/clear_cache">
                                   <span class="glyphicon glyphicon-trash"></span> Clear TTS Cache
                                 </a>
@@ -62,7 +66,7 @@
 					</div>
 
 					<div class="tab-pane" id="leds">
-						<h2>Led</h2>
+						<h2>Led <span class="glyphicon glyphicon-certificate"/></h2>
 						<h4>Command LED <a class="btn btn-danger" target="result" HREF="/cgi-bin/leds?color=000000">Off</a></h2>
 						<br>
 						<strong>Fixed</strong>
@@ -88,7 +92,7 @@
 					 
 					 
 					<div class="tab-pane" id="tts">
-						<h2>TTS</h2>
+						<h2>TTS <span class="glyphicon glyphicon-comment"/></h2>
                         <div id="alert" class="alert alert-success alert-dismissable" style="display:none;">
                           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                           <strong>Great !</strong> The message was sent successfully !
@@ -134,7 +138,7 @@
 					  
 					   
 					<div class="tab-pane" id="radio">
-						<h2>Radio</h2>
+						<h2>Radio <span class="glyphicon glyphicon-headphones"/></h2>
 						<form name="radiof" method="post" onsubmit="return radio();">
 							<div class="btn-group text-center" align="center">
 								<button type="button" class="btn btn-info" name="play" value="Play" onclick="radio()">
@@ -143,33 +147,65 @@
 								<A target="result" class="btn btn-warning" HREF='/cgi-bin/sound_control?cmd=quit'><IMG width='30px' SRC='img/stop.png'/></A>
 							</div>
 							<br>
-							<br>
-							<div class="btn-group btn-group-justified" data-toggle="buttons">
-								<label class="btn btn-primary">
-								<input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" checked/>Rire & Chanson<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://streaming.radio.rtl.fr/rtl-1-44-96"/>RTL<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://vipicecast.yacast.net/rmc"/>RMC<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://vipicecast.yacast.net/europe1"/>Europe 1<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://streaming.radio.rtl2.fr/rtl2-1-44-96"/>RTL2<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/nrj/all/nrj_113225.mp3"/>NRJ<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://mp3.live.tv-radio.com/cherie_fm/all/che_124310.mp3"/>Chérie FM<br>
-								</label>
-								<label class="btn btn-primary">
-									<input type="radio" name="play" value="http://stream5.nrj.yacast.net/virginradio"/>Virgin Radio<br>
-								</label>
-							</div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                    Music <span class="caret"/>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-form" role="menu">
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://stream5.nrj.yacast.net/virginradio" checked/>Virgin Radio
+                                    </label>
+    
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://mp3.live.tv-radio.com/rire_et_chansons/all/rir_124629.mp3" />Rire & Chanson
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://mp3.live.tv-radio.com/cherie_fm/all/che_124310.mp3"/>Chérie FM
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://streaming.radio.rtl2.fr/rtl2-1-44-96"/>RTL2
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://www.tv-radio.com/station/le_mouv_mp3/le_mouv_mp3-128k"/>Le mouv'
+                                    </label>
+                                  </ul>
+                                </div>
+                                
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                    Info <span class="caret"/>
+                                  </button>
+                                  <ul class="dropdown-menu dropdown-menu-form" role="menu">
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://vipicecast.yacast.net/rmc" checked/>RMC
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://streaming.radio.rtl.fr/rtl-1-44-96" />RTL
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://vipicecast.yacast.net/europe1"/>Europe 1
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://95.81.146.2/franceinfo/all/franceinfo.mp3"/>France Info
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="play" value="http://95.81.146.2/franceinter/all/franceinterhautdebit.mp3"/>France Inter
+                                    </label>
+                                  </ul>
+                                </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <input name="play" value="other" type="radio">
+                                        </span>
+                                        <input type="text" name="link" class="form-control" placeholder="Or enter a mp3's url">
+                                    </div>
+                                </div>
+                            </div>
 						</form>
 					</div>       
 					  
@@ -186,7 +222,7 @@
 					</div>
 								 
 					<div class="tab-pane" id="rfid">
-						<h2>RFID</h2>
+						<h2>RFID <span class="glyphicon glyphicon-tags"/></h2>
 						<br>
 						<div class="panel-group" id="assign_rfid">
                             <div class="row">
@@ -354,7 +390,7 @@
 				<br>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-				        <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#show_reply" href="#show_reply">View Reply</a></h4>
+				        <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#show_reply" href="#show_reply">View Reply <span class="glyphicon glyphicon-hand-left"/></a></h4>
 				    </div>
 				    <div id="show_reply" class="panel-collapse collapse">
                         <div class="panel-body">
@@ -400,7 +436,11 @@
         </script>
         <script type="text/javascript">
             function radio() {
-                var play =  findSelection("play");
+                var play = findSelection("play");
+                var the_form = document.forms['radiof'];
+                if(play=='other') {
+                    play = the_form.link.value;
+                }
                 window.open(
                     'cgi-bin/sound?url='+play,
                     'result' 
